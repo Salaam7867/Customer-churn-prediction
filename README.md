@@ -1,125 +1,172 @@
 # Customer Churn Prediction (Logistic Regression)
 
 ## Overview
-This project predicts customer churn in a telecom dataset using a supervised
-machine learning pipeline. The focus of the project is **model interpretability,
-metric trade-offs, and production-ready workflow**, not just accuracy.
+
+This project builds an **end-to-end customer churn prediction pipeline** for a telecom dataset.
+The focus is on **model comparison, business-driven evaluation, and a clean ML workflow**, not blind accuracy chasing.
+
+Logistic Regression was selected as the **final model** after comparison with XGBoost, based on recall-focused performance.
 
 ---
 
 ## Problem Statement
-Customer churn directly impacts revenue in subscription-based businesses.
-The goal is to **identify customers likely to churn early**, allowing retention
-strategies to be applied.
 
-This is an **imbalanced classification problem**, where missing churners
-(False Negatives) is costlier than flagging extra customers.
+Customer churn directly impacts revenue in subscription-based businesses.
+The objective is to **identify customers likely to churn early**, enabling proactive retention strategies.
+
+This is an **imbalanced classification problem**, where **missing churners (false negatives)** is more costly than flagging extra customers.
 
 ---
 
 ## Dataset
-- Source: IBM Telco Customer Churn dataset
-- Rows: ~7,000 customers
-- Target: `Churn` (Yes / No)
-- Dataset is intentionally **excluded from the repository**
+
+* Source: IBM Telco Customer Churn dataset
+* Size: ~7,000 customers
+* Target: `Churn` (Yes / No)
+* Note: Dataset may be excluded from the repository for licensing reasons
 
 ---
 
 ## Key Challenges
-- Class imbalance (~26% churn rate)
-- Precision–recall trade-off
-- Over-optimistic accuracy metrics
-- Business-driven evaluation (recall > accuracy)
+
+* Class imbalance (~26% churn rate)
+* Accuracy is misleading for churn problems
+* Precision–recall trade-off
+* Business-driven threshold selection
 
 ---
 
 ## Approach
 
 ### 1. Data Preprocessing
-- Removed non-informative identifiers (`customerID`)
-- Handled missing values in `TotalCharges`
-- One-hot encoded categorical features
-- Scaled numerical features using `StandardScaler`
 
-### 2. Model Selection
-- Logistic Regression chosen for:
-  - Interpretability
-  - Probability-based decision control
-  - Ease of deployment
-- Class imbalance handled via `class_weight`
-
-### 3. Threshold Tuning
-Instead of default 0.5 threshold:
-- Probabilities were used
-- Decision threshold tuned manually
-- Goal: **maximize recall while keeping precision reasonable**
-
-### 4. Evaluation Metrics
-- Confusion Matrix
-- Precision / Recall / F1-score
-- ROC–AUC
-
-Accuracy was **not** used as the primary metric.
+* Dropped non-informative identifier (`customerID`)
+* Handled missing values in `TotalCharges`
+* One-hot encoded categorical variables
+* Scaled numerical features using `StandardScaler`
+* Used stratified train–test split
 
 ---
 
-## Results
+### 2. Model Comparison
 
-| Metric (Churn Class) | Value |
-|---------------------|-------|
-| Recall              | ~90%  |
-| Precision           | ~45–55% |
-| ROC–AUC             | ~0.73 |
+Two models were evaluated:
+
+* **Logistic Regression**
+
+  * Interpretable
+  * Stable probabilities
+  * Easy to deploy
+* **XGBoost**
+
+  * Strong non-linear learner
+  * Better accuracy, slightly lower churn recall
+
+Both models were evaluated using **ROC–AUC and recall-focused metrics**.
+
+---
+
+### 3. Final Model Selection
+
+Although XGBoost achieved higher overall accuracy, **Logistic Regression was selected as the final model** because:
+
+* Higher recall for churners
+* Better alignment with retention-focused business goals
+* Simpler and more interpretable decision logic
+
+---
+
+### 4. Threshold Tuning
+
+Instead of using the default 0.5 probability threshold:
+
+* Churn probabilities were analyzed
+* A lower threshold was selected
+* Goal: **maximize recall while keeping precision reasonable**
+
+This reflects real-world churn prevention requirements.
+
+---
+
+## Evaluation Metrics
+
+* Confusion Matrix
+* Precision / Recall / F1-score
+* ROC–AUC
+
+Accuracy was **not** used as the primary decision metric.
+
+---
+
+## Results (Logistic Regression)
+
+| Metric (Churn Class) | Value   |
+| -------------------- | ------- |
+| Recall               | ~90%    |
+| Precision            | ~45–55% |
+| ROC–AUC              | ~0.73   |
 
 **Interpretation:**
-- Model successfully captures most churners
-- Accepts higher false positives as a business trade-off
-- Suitable for retention-focused strategies
+
+* Most churners are correctly identified
+* Higher false positives are accepted as a business trade-off
+* Model is suitable for retention campaigns
+
+---
+
+## Repository Structure
+
+* `comparison_model/`
+
+  * `churn_model_comparison.ipynb` – Logistic Regression vs XGBoost analysis
+  * `churn_logreg_model.pkl` – trained Logistic Regression model
+  * `churn_xgb_model.pkl` – trained XGBoost model (comparison)
+  * `scaler.pkl`, `feature_columns.pkl` – preprocessing artifacts
+* `Trained_model.ipynb` – final training and evaluation notebook
+* `app.py` – inference-ready prediction script
+* `requirements.txt` – reproducible environment
 
 ---
 
 ## Business Interpretation
-- High recall ensures fewer churners are missed
-- False positives are acceptable compared to lost customers
-- Model aligns with real-world churn prevention use cases
 
----
-
-## Files in Repository
-- `Log_reg2.ipynb` – training, evaluation, and analysis
-- `app.py` – inference-ready prediction script
-- `churn_model.pkl` – trained Logistic Regression model
-- `scaler.pkl` – fitted feature scaler
-- `feature_columns.pkl` – feature alignment for inference
-- `requirements.txt` – reproducible environment
+* High recall minimizes missed churners
+* False positives are cheaper than lost customers
+* Model decisions are transparent and explainable
 
 ---
 
 ## Limitations
-- Linear model may miss complex non-linear patterns
-- Precision could be improved with:
-  - Stronger behavioral features
-  - Tree-based models
-  - Temporal data
+
+* Linear model may miss complex non-linear interactions
+* Precision can be improved with:
+
+  * Better behavioral features
+  * Temporal usage data
+  * Ensemble approaches
 
 ---
 
 ## Future Improvements
-- Add SHAP-based feature explanations
-- Compare with XGBoost / LightGBM
-- Deploy via Streamlit or FastAPI
-- Incorporate customer activity trends
+
+* SHAP-based explainability
+* LightGBM / XGBoost tuning
+* Deployment via Streamlit or FastAPI
+* Monitoring prediction drift over time
 
 ---
 
 ## Tech Stack
-- Python
-- Pandas, NumPy
-- Scikit-learn
-- Matplotlib
-- Git & GitHub
+
+* Python
+* Pandas, NumPy
+* Scikit-learn
+* XGBoost
+* Matplotlib
+* Git & GitHub
 
 ---
 
 ## Author
-Mohd Abdul Salaam
+
+**Mohd Abdul Salaam**
