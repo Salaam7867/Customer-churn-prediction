@@ -1,12 +1,11 @@
 # Customer Churn Prediction (Logistic Regression)
 
 ## Overview
-
 This project builds an **end-to-end customer churn prediction pipeline** for a telecom dataset.
 The focus is on **model comparison, business-driven evaluation, and a clean ML workflow**, not blind accuracy chasing.
 
 Logistic Regression was selected as the **final model** after comparison with XGBoost, based on recall-focused performance.
-
+link : https://customer-churn-prediction-786.streamlit.app/
 ---
 
 ## Problem Statement
