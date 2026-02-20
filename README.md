@@ -1,174 +1,139 @@
-Customer Churn Prediction (XGBoost – Business Optimized)
+# 🚀 Customer Churn Prediction (XGBoost – Business Optimized)
 
-End-to-end customer churn prediction pipeline using tuned XGBoost, business-driven threshold selection, and SHAP-based explainability.
+> End-to-end customer churn prediction pipeline using tuned XGBoost, recall-constrained threshold optimization, and SHAP explainability.
 
-This project focuses on real-world deployment thinking, not just accuracy optimization.
+---
 
-Problem Statement
+## 📌 Overview
+
+This project builds a **production-ready churn prediction system** designed for real-world business deployment.
+
+Instead of optimizing accuracy blindly, the model is designed to:
+
+- 🎯 Maintain **Recall ≥ 85%** for churners  
+- 📊 Maximize precision under business constraints  
+- 🔍 Provide explainability using SHAP  
+- 🚀 Be deployment-ready via Streamlit  
+
+---
+
+## 🧠 Problem Statement
 
 Customer churn directly impacts revenue in subscription-based businesses.
 
-Objective:
+The objective is to:
 
-Identify high-risk customers early
+- Identify high-risk customers early  
+- Reduce false negatives (missed churners)  
+- Accept controlled false positives for retention strategy  
 
-Maintain high recall for churners (≥ 85%)
+This is an **imbalanced classification problem (~26% churn rate)**.
 
-Optimize precision under business constraints
+---
 
-Deploy a production-ready inference pipeline
+## 📊 Final Model Performance (XGBoost)
 
-This is an imbalanced binary classification problem (~26% churn rate).
+| Metric | Value |
+|--------|--------|
+| ROC–AUC | **0.8438** |
+| PR–AUC | **0.6645** |
+| Recall (Churn) | **85.56%** |
+| Precision (Churn) | **47.69%** |
+| Selected Threshold | **0.399** |
 
-Dataset
+### 🔎 Interpretation
 
-Source: IBM Telco Customer Churn Dataset
+- Captures majority of churners  
+- Accepts manageable false positives  
+- Suitable for proactive retention campaigns  
 
-Records: ~7,000 customers
+---
 
-Target Variable: Churn (Yes / No)
+## ⚙️ Modeling Strategy
 
-Model Strategy
+- Stratified train-test split  
+- Class imbalance handling (`scale_pos_weight`)  
+- Randomized hyperparameter tuning (5-fold CV)  
+- Business-constrained threshold selection  
+- SHAP explainability  
+- Modular architecture  
 
-Instead of optimizing accuracy, the model was designed to:
+---
 
-Maximize churn recall (reduce false negatives)
-
-Maintain acceptable precision
-
-Select threshold based on business rule:
-
-Recall ≥ 85%, maximize precision under this constraint
-
-Final Model Performance (XGBoost)
-Metric	Value
-ROC–AUC	0.8438
-PR–AUC	0.6645
-Recall (Churn)	85.56%
-Precision (Churn)	47.69%
-Selected Threshold	0.399
-Interpretation
-
-Captures majority of churners
-
-Accepts higher false positives for retention benefit
-
-Suitable for proactive retention campaigns
-
-Key Features
-
-Stratified train-test split
-
-Imbalance handling using scale_pos_weight
-
-Randomized hyperparameter search (5-fold CV)
-
-Business-constrained threshold optimization
-
-SHAP explainability
-
-Modular project structure
-
-Deployment-ready artifacts
-
-Project Structure
+## 🗂 Project Structure
 customer-churn-prediction/
 │
 ├── app/
-│   └── app.py                # Streamlit UI
+│ └── app.py # Streamlit UI
 │
 ├── models/
-│   ├── xgb_model.pkl         # Trained XGBoost model
-│   ├── feature_columns.pkl   # Feature schema
-│   └── threshold.pkl         # Business-selected threshold
+│ ├── xgb_model.pkl # Trained XGBoost model
+│ ├── feature_columns.pkl # Feature schema
+│ └── threshold.pkl # Business-selected threshold
 │
 ├── src/
-│   ├── preprocess.py         # Data cleaning & feature prep
-│   ├── train.py              # Training pipeline
-│   └── predict.py            # Inference logic
+│ ├── preprocess.py # Data cleaning & feature prep
+│ ├── train.py # Training pipeline
+│ └── predict.py # Inference logic
 │
-├── main.py                   # Training entry point
+├── main.py # Training entry point
 ├── requirements.txt
 └── README.md
-Deployment
 
-The model is deployed using Streamlit.
 
-Live App
+---
 
-(Insert your Streamlit link here)
+## 📦 Deployment
+
+The model is deployed using **Streamlit**.
+
+### 🔗 Live App  
+*(Insert your Streamlit URL here)*
 
 The app:
 
-Accepts user input
+- Accepts customer input  
+- Applies preprocessing  
+- Uses saved artifacts  
+- Applies optimized threshold  
+- Returns churn probability  
 
-Applies preprocessing
+---
 
-Uses saved model artifacts
+## 🔬 Explainability (SHAP)
 
-Applies optimized threshold
+Tree-based SHAP values are used for:
 
-Outputs churn probability
-
-Explainability
-
-SHAP TreeExplainer is used for:
-
-Global feature importance
-
-Model transparency
-
-Business interpretability
+- Global feature importance  
+- Model transparency  
+- Business interpretation  
 
 Top churn indicators typically include:
 
-Contract type
+- Contract type  
+- Tenure  
+- Monthly charges  
+- Internet service  
 
-Tenure
+---
 
-Monthly charges
+## 🛠 Tech Stack
 
-Internet service type
+- Python  
+- Pandas  
+- NumPy  
+- Scikit-learn  
+- XGBoost  
+- SHAP  
+- Streamlit  
+- Git  
 
-Why XGBoost Over Logistic Regression?
+---
 
-Although Logistic Regression performed well:
+## 🖥 Run Locally
 
-XGBoost achieved higher ROC–AUC
-
-Better PR–AUC under imbalance
-
-More robust feature interactions
-
-Improved recall–precision tradeoff
-
-Final model selected based on business alignment.
-
-Tech Stack
-
-Python
-
-Pandas
-
-NumPy
-
-Scikit-learn
-
-XGBoost
-
-SHAP
-
-Streamlit
-
-Git
-
-How to Run Locally
+```bash
 git clone https://github.com/Salaam7867/customer-churn-prediction.git
 cd customer-churn-prediction
 pip install -r requirements.txt
 streamlit run app/app.py
-Author
-
-Mohd Abdul Salaam
-B.E. Computer Science Engineering
-Aspiring Machine Learning / AI Engineer
