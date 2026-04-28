@@ -87,7 +87,7 @@ customer-churn-prediction/
 
 The model is deployed using **Streamlit**.
 
-### 🔗 Live App  
+### 🔗 Live App link
 https://customer-churn-prediction-salaam-73.streamlit.app/
 
 The app:
