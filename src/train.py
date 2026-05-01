@@ -58,7 +58,6 @@ def train_xgb(X, y):
     print("Best Params:", search.best_params_)
 
     y_prob = best_model.predict_proba(X_test)[:, 1]
-
     roc_auc = roc_auc_score(y_test, y_prob)
     print("Test ROC–AUC:", round(roc_auc, 4))
 
