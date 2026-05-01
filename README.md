@@ -3,7 +3,6 @@
 > End-to-end customer churn prediction pipeline using tuned XGBoost, recall-constrained threshold optimization, and SHAP explainability.
 
 ---
-
 ## 📌 Overview
 
 This project builds a **production-ready churn prediction system** designed for real-world business deployment.
