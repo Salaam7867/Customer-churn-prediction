@@ -49,7 +49,6 @@ This is an **imbalanced classification problem (~26% churn rate)**.
 ---
 
 ## ⚙️ Modeling Strategy
-
 - Stratified train-test split  
 - Class imbalance handling (`scale_pos_weight`)  
 - Randomized hyperparameter tuning (5-fold CV)  
